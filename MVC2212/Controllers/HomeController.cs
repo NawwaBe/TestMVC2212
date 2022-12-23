@@ -18,11 +18,12 @@ namespace MVC2212.Controllers
         public string Index(string username, string password)
         {
             var id = 0;
-            var connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
-            NpgsqlConnection conn = new NpgsqlConnection(connectionString);
-            var commandText = "SELECT id FROM users WHERE login = '" + username + "' AND password = '" + password + "'";
+            NpgsqlConnection conn = new NpgsqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
+            var commandText = "SELECT id FROM users WHERE login = @username AND password = @password";
             var command = new NpgsqlCommand(commandText, conn);
+            
+            command.Parameters.AddWithValue("@username", username);
+            command.Parameters.AddWithValue("@password", password);
 
             conn.Open();
 
