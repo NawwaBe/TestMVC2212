@@ -1,9 +1,11 @@
 ﻿using Npgsql;
 using System;
+using System.Configuration;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Configuration;
 
 namespace MVC2212.Controllers
 {
@@ -16,7 +18,9 @@ namespace MVC2212.Controllers
         public string Index(string username, string password)
         {
             var id = 0;
-            NpgsqlConnection conn = new NpgsqlConnection("Host=localhost:5432;Username=postgres;Password=mvc2212;Database=postgres");
+            var connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+            NpgsqlConnection conn = new NpgsqlConnection(connectionString);
             var commandText = "SELECT id FROM users WHERE login = '" + username + "' AND password = '" + password + "'";
             var command = new NpgsqlCommand(commandText, conn);
 
